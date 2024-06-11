@@ -98,13 +98,13 @@
 	    <repository>
 	      <id>nexus</id>
 	      <name>Sandip Rathod Releases Nexus Repository</name>
-	      <url>http://13.234.180.200:8000/sandiprthd/repository/facebook_rr/</url>
+	      <url>http://13.234.180.200:9980/sandiprthd/repository/myproject-release/</url>
 	    </repository>
 	    
 	    <snapshotRepository>
 	      <id>nexus</id>
 	      <name>Mithun Technologies Snapshot Nexus Repository </name>
-	      <url>http://13.234.180.200:8000/sandiprthd/repository/facebook_ss/</url>
+	      <url>http://13.234.180.200:9980/sandiprthd/repository/myproject-snapshot/</url>
 	    </snapshotRepository>
 	    
 	</distributionManagement>
