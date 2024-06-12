@@ -97,7 +97,7 @@
 	
 	    <repository>
 	      <id>nexus</id>
-	      <name>Sandip Rathod Releases Nexus Repository</name>
+	      <name>Mithun Technologies Releases Nexus Repository</name>
 	      <url>http://13.234.180.200:9980/sandiprthd/repository/myproject-release/</url>
 	    </repository>
 	    
