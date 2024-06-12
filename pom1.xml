@@ -1,0 +1,25 @@
+node {
+    def Home = tool name:'Maven'
+    
+    //print details
+echo "The Job name is: ${env.JOB_NAME}"
+echo "The Nod ename is: ${env.NODE_NAME}"
+echo "The Build Number is: ${env.BUILD_NUMBER}"
+echo "The Jenkins Home directory is: ${JENKINS_HOME}"
+
+
+    stage ('addgit')
+    {
+        git credentialsId: '2d06e323-011a-4525-8ec0-31e7e6edb2fc', url: 'https://github.com/sandiprthd/maven-web-application.git'
+    }
+    stage ('addmaven')
+    {
+        sh "${Home}/bin/mvn package"
+    }
+    stage('ExecuteSoanrQubeReport')
+  {
+        sh "${Home}/bin/mvn sonar:sonar"
+  }
+ 
+
+}
