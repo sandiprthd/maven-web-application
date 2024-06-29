@@ -1,0 +1,39 @@
+pipeline{
+agent any
+tools{
+maven "Maven"
+}
+stages{
+	stage('getinggit'){
+			steps{
+                    git credentialsId: '05796bc1-d878-4caa-9f39-82f822409fa9', url: 'https://github.com/sandiprthd/maven-web-application.git'
+                    
+			      }
+			}
+			
+			stage('getmaven'){
+			steps{
+                    sh "mvn clean package"
+
+			      }
+			}
+			
+			stage('getsonar'){
+			steps{
+                    sh "mvn sonar:sonar"
+
+			      }
+			}
+			
+	}
+  
+   
+   
+   
+   
+   
+   
+   
+   
+     }
+   
