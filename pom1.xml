@@ -24,9 +24,6 @@ echo "The Jenkins Home directory is: ${JENKINS_HOME}"
         sh "$mavenhome/bin/mvn deploy"
     }
     
-    sshagent(['b2547883-ef03-4989-a8e5-ec1664aff829']) {
-        //sh "scp -o target/maven-web-application.war ec2-user@3.110.32.95: "
-        sh  "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@3.110.32.95:/opt/tomcat9/webapps/"
-}
+
     
 }
