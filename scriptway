@@ -1,0 +1,21 @@
+pipeline{
+
+agent any
+
+tools{
+maven "maven"
+}
+
+stages{
+    stage('code'){
+      steps{
+  git credentialsId: 'bbb2a98e-9f27-4a46-b330-42f7dc005d72', url: 'https://github.com/sandiprthd/maven-web-application.git'
+    }
+}    
+    stage('package'){
+      steps{
+  sh "mvn clean package"
+    }
+}    
+}
+}
