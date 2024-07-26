@@ -1,25 +1,32 @@
 node {
-    def Home = tool name:'Maven'
     
-    //print details
+    def mavenhome = tool name:"maven"
+
+   //print details
 echo "The Job name is: ${env.JOB_NAME}"
 echo "The Nod ename is: ${env.NODE_NAME}"
 echo "The Build Number is: ${env.BUILD_NUMBER}"
 echo "The Jenkins Home directory is: ${JENKINS_HOME}"
-
-
-    stage ('addgit')
-    {
-        git credentialsId: '2d06e323-011a-4525-8ec0-31e7e6edb2fc', url: 'https://github.com/sandiprthd/maven-web-application.git'
+    
+    stage ('code'){
+        git credentialsId: 'bbb2a98e-9f27-4a46-b330-42f7dc005d72', url: 'https://github.com/sandiprthd/maven-web-application.git'
     }
-    stage ('addmaven')
-    {
-        sh "${Home}/bin/mvn package"
+    
+    stage ('package'){
+        sh "$mavenhome/bin/mvn clean package"
     }
-    stage('ExecuteSoanrQubeReport')
-  {
-        sh "${Home}/bin/mvn sonar:sonar"
-  }
- 
-
+    
+    stage ('report'){
+        sh "$mavenhome/bin/mvn sonar:sonar"
+    }
+    
+    stage ('deploy'){
+        sh "$mavenhome/bin/mvn deploy"
+    }
+    
+    sshagent(['b2547883-ef03-4989-a8e5-ec1664aff829']) {
+        //sh "scp -o target/maven-web-application.war ec2-user@3.110.32.95: "
+        sh  "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@3.110.32.95:/opt/tomcat9/webapps/"
+}
+    
 }
