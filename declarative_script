@@ -1,6 +1,6 @@
 pipeline{
 
-agent any
+// agent any ## job will running on master intsance only 
 
 tools{
 maven "maven"
