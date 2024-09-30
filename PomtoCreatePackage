@@ -1,0 +1,23 @@
+node {
+    
+    def mavenhome = tool name:"maven"
+
+   //print details
+echo "The Job name is: ${env.JOB_NAME}"
+echo "The Nod ename is: ${env.NODE_NAME}"
+echo "The Build Number is: ${env.BUILD_NUMBER}"
+echo "The Jenkins Home directory is: ${JENKINS_HOME}"
+    
+    stage ('code'){
+        git credentialsId: 'bbb2a98e-9f27-4a46-b330-42f7dc005d72', url: 'https://github.com/sandiprthd/maven-web-application.git'
+    }
+    
+    stage ('package'){
+        sh "$mavenhome/bin/mvn clean package"
+    }
+    
+   
+    
+
+    
+}
