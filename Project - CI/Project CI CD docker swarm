@@ -2,33 +2,41 @@ Project - CI/CD docker swarm
 -----------------------------
 jenkins+docker, docker master and two docker worker
 sudo usermod -aG docker jenkins
+restart jenkins service
 
 node{
-def mavenhome = tool name:"maven"
-def buildname = BUILD_NUMBER
-stage('git_clone')
-		{
-		git url
-		}
-stage ('package'){
+    def mavenhome = tool name:"maven"
+    def buildname = BUILD_NUMBER
+    
+    
+    stage('git code got'){
+        git 'https://github.com/sandiprthd/maven-web-application.git'
+    }
+    
+    stage('maven cmd'){
         sh "$mavenhome/bin/mvn clean package"
-    		}
-stage('build docker'){
-		 sh "docker build -t "sandiprthd/java-web-apps:${buildname} ."
-		}
+    }
+    
+    stage('docker build cmd'){
+        sh "docker build -t sandiprthd/maven-web-apps:${buildname} ."
+        //sh "docker build -t sandiprthd/java-web-app:${buildNumber} ."
+    }
+
 stage('Push docker'){
-		 sh "docker login -u sandiprthd -p Notebook#330"//create securty
-		 sh "docker push sandiprthd/java-web-apps:${buildname}"
-		}
-		//ssh agent pulgin install 
-
+    withCredentials([string(credentialsId: 'dockerhub', variable: 'dockerhub')]) {
+    sh "docker login -u sandiprthd -p ${dockerhub}"//create securty
+        }
+		 
+		 sh "docker push sandiprthd/maven-web-apps:${buildname}"
+		}    
+		
+		
 stage('run docker in docker swarm'){
-	sshagent'docker swarm'){
-			sh "ssh -o StrickHostKeyChecking=no ubuntu(ip_private_docker_master) docker service rm sandipjava || true"
-
-			sh "ssh -o StrickHostKeyChecking=no ubuntu(ip_private_docker_master) docker service create --name sandipjava -p 8080:8080 --replicas 2 sandiprthd/java-web-apps:${buildname}"
-
-				}
+    sshagent(['docker_swarm_ssh']) {
+            sh 'ssh -o StrictHostKeyChecking=no ubuntu@172.31.44.153 docker service rm sandipmaven || true'
+            //sh 'ssh -o StrictHostKeyChecking=no ubuntu@172.31.47.232 docker service rm javawebapp || true'
+			sh "ssh ubuntu@172.31.44.153 docker service create --name sandipmaven -p 8080:8080 --replicas 2 sandiprthd/maven-web-apps:${buildname}"
+        }
+    
+    }
 }
-
-
