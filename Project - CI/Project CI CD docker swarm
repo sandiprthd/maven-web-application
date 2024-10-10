@@ -1,0 +1,34 @@
+Project - CI/CD docker swarm
+-----------------------------
+jenkins+docker, docker master and two docker worker
+sudo usermod -aG docker jenkins
+
+node{
+def mavenhome = tool name:"maven"
+def buildname = BUILD_NUMBER
+stage('git_clone')
+		{
+		git url
+		}
+stage ('package'){
+        sh "$mavenhome/bin/mvn clean package"
+    		}
+stage('build docker'){
+		 sh "docker build -t "sandiprthd/java-web-apps:${buildname} ."
+		}
+stage('Push docker'){
+		 sh "docker login -u sandiprthd -p Notebook#330"//create securty
+		 sh "docker push sandiprthd/java-web-apps:${buildname}"
+		}
+		//ssh agent pulgin install 
+
+stage('run docker in docker swarm'){
+	sshagent'docker swarm'){
+			sh "ssh -o StrickHostKeyChecking=no ubuntu(ip_private_docker_master) docker service rm sandipjava || true"
+
+			sh "ssh -o StrickHostKeyChecking=no ubuntu(ip_private_docker_master) docker service create --name sandipjava -p 8080:8080 --replicas 2 sandiprthd/java-web-apps:${buildname}"
+
+				}
+}
+
+
