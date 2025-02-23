@@ -1,0 +1,14 @@
+node {
+    
+    def mavenhome = tool name:"Maven"
+
+   stage ('code'){
+        git credentialsId: 'git_id', url: 'https://github.com/sandiprthd/maven-web-application.git'
+    }
+    
+    stage ('package'){
+        "$mavenhome/bin/mvn clean package"
+    }
+    
+    
+}
