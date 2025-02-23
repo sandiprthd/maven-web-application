@@ -24,12 +24,7 @@ stages{
 
 			      }
 			}
-stage('getsonar'){
-			steps{
-                    sh "mvn sonar:sonar"
 
-			      }
-			}
 			
 	}
   
